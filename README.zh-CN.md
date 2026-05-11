@@ -116,7 +116,7 @@ ln -s ~/antigravity-skills/skills/* .agent/skills/
 
 
 
-## 🚀 已集成的 Skills (共 57 个)
+## 🚀 已集成的 Skills (共 79 个)
 
 ### 🎨 创意与设计 (Creative & Design)
 这些技能专注于视觉表现、UI/UX 设计和艺术创作。
@@ -131,6 +131,22 @@ ln -s ~/antigravity-skills/skills/* .agent/skills/
 - **`@[remotion]`**: Remotion 最佳实践 - 使用 React 创建视频。
 - **`@[web-design-guidelines]`**: 审查 UI 代码是否符合 Web 界面指南（可访问性、用户体验、设计审计）。
 - **`@[slack-gif-creator]`**: 制作专用于 Slack 的高质量 GIF 动图
+- **`@[baoyu-infographic]`**: 生成具有多种布局和风格的专业信息图表
+- **`@[baoyu-diagram]`**: 根据内容生成结构化图表
+- **`@[baoyu-imagine]`**: 适用于 Midjourney 或类似工具的 AI 图像生成包装器
+- **`@[baoyu-image-gen]`**: [已废弃: 请使用 `@[baoyu-imagine]`] 支持多 API 的 AI 图像生成。
+
+### 📢 内容生成与发布 (Content & Publishing)
+这些技能专注于内容生成、格式化和发布到社交媒体。
+- **`@[baoyu-xhs-images]`**: 小红书图片卡片系列生成器，支持多种风格和布局
+- **`@[baoyu-post-to-wechat]`**: 将内容发布到微信公众号
+- **`@[baoyu-post-to-weibo]`**: 将内容发布到微博
+- **`@[baoyu-post-to-x]`**: 将内容发布到 X (Twitter)
+- **`@[baoyu-cover-image]`**: 生成专业的封面图片
+- **`@[baoyu-slide-deck]`**: 生成演示文稿幻灯片
+- **`@[baoyu-comic]`**: 根据内容生成连环画/漫画
+- **`@[baoyu-article-illustrator]`**: 为文章生成插图
+- **`@[baoyu-image-cards]`**: 生成具有多种风格和布局的信息图表图片卡片系列（优化社交媒体传播）
 
 ### 🛠️ 开发与工程 (Development & Engineering)
 这些技能涵盖了编码、测试、调试和代码审查的全生命周期。
@@ -145,6 +161,7 @@ ln -s ~/antigravity-skills/skills/* .agent/skills/
 - **`@[requesting-code-review]`**: 主动发起代码审查，在合并或完成任务前验证代码质量
 - **`@[finishing-a-development-branch]`**: 引导开发分支的收尾工作（合并、PR、清理等）
 - **`@[subagent-driven-development]`**: 协调多个子 Agent 并行执行独立的开发任务
+- **`@[claude-api]`**: 使用 Claude API 或 Anthropic SDK 构建应用（支持 Python, TypeScript, Java, Go 等）
 
 ### 📄 文档与办公 (Documentation & Office)
 这些技能用于处理各种格式的专业文档和办公需求。
@@ -159,6 +176,15 @@ ln -s ~/antigravity-skills/skills/* .agent/skills/
 - **`@[pdf]`**: 处理 PDF 文档，包括提取文本、表格，合并/拆分及填写表单
 - **`@[internal-comms]`**: 起草各类企业内部沟通文档（周报、通告、FAQ 等）
 - **`@[notebooklm]`**: 查询 Google NotebookLM 笔记本，提供基于文档的确切答案
+- **`@[baoyu-youtube-transcript]`**: 获取并处理 YouTube 视频字幕
+- **`@[baoyu-url-to-markdown]`**: 将网页内容转换为干净的 Markdown
+- **`@[baoyu-format-markdown]`**: 格式化并清理 Markdown 文件
+- **`@[baoyu-markdown-to-html]`**: 将 Markdown 转换为带样式的 HTML
+- **`@[baoyu-translate]`**: 针对文章和内容的高质量翻译
+- **`@[baoyu-compress-image]`**: 压缩并优化图片
+- **`@[baoyu-danger-gemini-web]`**: 使用 Gemini 进行网页自动化或抓取（实验性）
+- **`@[baoyu-danger-x-to-markdown]`**: 将 X (Twitter) 帖子串转换为 Markdown
+
 
 ### 📅 计划与流程 (Planning & Workflow)
 这些技能帮助优化工作流、任务规划和执行效率。
@@ -210,6 +236,7 @@ ln -s ~/antigravity-skills/skills/* .agent/skills/
 - **[Remotion Skills](https://github.com/remotion-dev/skills)**: Remotion 官方提供的 AI Agent 技能，用于通过代码创建视频。
 - **[Vercel Agent Skills](https://github.com/vercel-labs/agent-skills)**: Vercel 提供的官方技能，涵盖 React 最佳实践、组合模式和 Web 设计指南。
 - **[Supabase Agent Skills](https://github.com/supabase/agent-skills)**: Supabase 提供的官方技能，专注于 Postgres 性能优化和最佳实践。
+- **[Baoyu Skills](https://github.com/JimLiu/baoyu-skills)**: 专注于内容生成、发布和日常效率的技能集合，包括小红书图片生成器、信息图表生成器和内容转换工具等。
 
 ## 🛡️ 安全策略 (Security Policy)
 

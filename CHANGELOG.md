@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v2.4.0] - 2026-05-11
+### Added
+- **21 New Skills (Baoyu Skills & Claude API)**:
+  - Added `baoyu-skills` repository as a synchronization source.
+  - Synced 20 active skills from Baoyu (e.g., `baoyu-infographic`, `baoyu-diagram`, `baoyu-imagine`).
+  - Added `claude-api` for building apps with Claude API or Anthropic SDK.
+- **Dynamic Skill Indexing Script**: Created `scripts/update_skills_index.py` to automatically scan the `skills/` directory and generate `skills_index.json`.
+
+### Changed
+- **Documentation**:
+  - Updated `README.md` and `README.zh-CN.md` to list the new skills (Total: 79).
+  - Added a new category `📢 Content & Publishing` in both READMEs.
+  - Marked `baoyu-image-gen` as deprecated in both READMEs with a note to use `baoyu-imagine`.
+- **Skill Index**: Rebuilt `skills_index.json` using the new dynamic script, including all 79 skills.
+
 ## [v2.3.0] - 2026-02-09
 ### Added
 - **5 New Development Skills**:

@@ -114,7 +114,7 @@ Many skills in this project originate from excellent open-source communities. To
 
     > **Note**: The `ui-ux-pro-max` skill has a special directory structure and does not support automatic synchronization via script for now. Please use its official installation command `uipro init --ai antigravity` to install or update.
 
-## 🚀 Integrated Skills (Total: 57)
+## 🚀 Integrated Skills (Total: 79)
 
 ### 🎨 Creative & Design
 These skills focus on visual expression, UI/UX design, and artistic creation.
@@ -129,6 +129,22 @@ These skills focus on visual expression, UI/UX design, and artistic creation.
 - **`@[remotion]`**: Best practices for Remotion - Video creation in React.
 - **`@[web-design-guidelines]`**: Review UI code for Web Interface Guidelines compliance (accessibility, UX, design audit).
 - **`@[slack-gif-creator]`**: Create high-quality animated GIFs optimized specifically for Slack.
+- **`@[baoyu-infographic]`**: Generate professional infographics with various layouts and styles.
+- **`@[baoyu-diagram]`**: Generate structured diagrams from content.
+- **`@[baoyu-imagine]`**: AI image generation wrapper for Midjourney or similar.
+- **`@[baoyu-image-gen]`**: [Deprecated: use `@[baoyu-imagine]`] AI image generation with multiple APIs.
+
+### 📢 Content & Publishing
+These skills focus on content generation, formatting, and publishing to social media.
+- **`@[baoyu-xhs-images]`**: Xiaohongshu image card series generator with styles and layouts.
+- **`@[baoyu-post-to-wechat]`**: Publish content to WeChat Official Account.
+- **`@[baoyu-post-to-weibo]`**: Publish content to Weibo.
+- **`@[baoyu-post-to-x]`**: Publish content to X (Twitter).
+- **`@[baoyu-cover-image]`**: Generate professional cover images.
+- **`@[baoyu-slide-deck]`**: Generate presentation slide decks.
+- **`@[baoyu-comic]`**: Generate comic strips from content.
+- **`@[baoyu-article-illustrator]`**: Generate illustrations for articles.
+- **`@[baoyu-image-cards]`**: Generates infographic image card series with multiple styles and layouts (optimized for social media).
 
 ### 🛠️ Development & Engineering
 These skills cover the full lifecycle of coding, testing, debugging, and code review.
@@ -143,6 +159,7 @@ These skills cover the full lifecycle of coding, testing, debugging, and code re
 - **`@[requesting-code-review]`**: Proactively initiate code reviews to verify code quality before merging or completion.
 - **`@[finishing-a-development-branch]`**: Guide the finalization of a development branch (merges, PRs, cleanups, etc.).
 - **`@[subagent-driven-development]`**: Coordinate multiple sub-agents to perform independent development tasks in parallel.
+- **`@[claude-api]`**: Build apps with the Claude API or Anthropic SDK (Python, TypeScript, Java, Go, etc.).
 
 ### 📄 Documentation & Office
 These skills are used for handling professional documents and office needs in various formats.
@@ -157,6 +174,15 @@ These skills are used for handling professional documents and office needs in va
 - **`@[pdf]`**: Process PDF documents, including extracting text/tables, merging/splitting, and filling forms.
 - **`@[internal-comms]`**: Draft various corporate internal communication documents (weekly reports, announcements, FAQs, etc.).
 - **`@[notebooklm]`**: Query Google NotebookLM notebooks for definitive, document-grounded answers.
+- **`@[baoyu-youtube-transcript]`**: Fetch and process YouTube video transcripts.
+- **`@[baoyu-url-to-markdown]`**: Convert web page content to clean Markdown.
+- **`@[baoyu-format-markdown]`**: Format and clean up Markdown files.
+- **`@[baoyu-markdown-to-html]`**: Convert Markdown to styled HTML.
+- **`@[baoyu-translate]`**: High-quality translation for articles and content.
+- **`@[baoyu-compress-image]`**: Compress and optimize images.
+- **`@[baoyu-danger-gemini-web]`**: Web automation or scraping using Gemini (experimental).
+- **`@[baoyu-danger-x-to-markdown]`**: Convert X (Twitter) threads to Markdown.
+
 
 ### 📅 Planning & Workflow
 These skills help optimize workflows, task planning, and execution efficiency.
@@ -208,6 +234,7 @@ This project integrates core ideas or skill implementations from the following e
 - **[Remotion Skills](https://github.com/remotion-dev/skills)**: Official Remotion skills for AI agents to create videos programmatically.
 - **[Vercel Agent Skills](https://github.com/vercel-labs/agent-skills)**: Official Vercel skills for React best practices, composition patterns, and web design guidelines.
 - **[Supabase Agent Skills](https://github.com/supabase/agent-skills)**: Official Supabase skills for Postgres performance optimization and best practices.
+- **[Baoyu Skills](https://github.com/JimLiu/baoyu-skills)**: A collection of skills for content generation, publishing, and daily efficiency, including XHS image generator, infographic generator, and content converters.
 
 ## 🛡️ Security Policy
 
