@@ -108,6 +108,9 @@ oah enable --global --target=all
 # Enable all components globally (system-level)
 oah enable --global
 
+# Enable all components in a custom target directory (auto-creates subdirectories dynamically)
+oah enable --path=/path/to/my_agent_dir
+
 # Disable all components inside the current project workspace
 oah disable
 ```
@@ -123,6 +126,7 @@ oah disable
     *   `-p, --project` (default): Project-level activation (links config directories inside your current working directory, e.g. `.claude/`).
     *   `-g, --global`: System global level activation (e.g., links into user home config folder, like `~/.claude/`).
     *   `-t, --target <name>`: Target environment to link to (supported: `claude`, `antigravity`, `gemini`, `codex`, `cursor`, `trae`, `opencode` and `all` to configure all of them, default: `claude`).
+    *   `--path <dir_path>`: Custom base directory to link components into (creates and links within `skills/`, `agents/`, and `commands/` subdirectories automatically).
 
 
 

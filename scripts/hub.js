@@ -57,6 +57,7 @@ function parseArgs(args) {
     global: false,
     project: true,
     target: 'claude',
+    path: null,
     positionals: []
   };
 
@@ -68,6 +69,17 @@ function parseArgs(args) {
     } else if (arg === '-p' || arg === '--project') {
       options.project = true;
       options.global = false;
+    } else if (arg === '--path') {
+      const val = args[i + 1];
+      if (val && !val.startsWith('-')) {
+        options.path = path.resolve(val);
+        i++;
+      } else {
+        console.error(colors.red + `错误: --path 选项缺少参数` + colors.reset);
+        process.exit(1);
+      }
+    } else if (arg.startsWith('--path=')) {
+      options.path = path.resolve(arg.split('=')[1]);
     } else if (arg === '-t' || arg === '--target' || arg === '--assistant' || arg === '--host' || arg === '--tool') {
       const val = args[i + 1];
       if (val && !val.startsWith('-')) {
@@ -94,7 +106,7 @@ function parseArgs(args) {
 
 const parsed = parseArgs(process.argv.slice(2));
 
-if (parsed.target !== 'all' && !targets[parsed.target]) {
+if (!parsed.path && parsed.target !== 'all' && !targets[parsed.target]) {
   console.error(format('red', `错误: 不支持的目标环境 "${parsed.target}"。`));
   console.log(`支持的目标环境列表: ${Object.keys(targets).join(', ')}, all`);
   process.exit(1);
@@ -118,7 +130,16 @@ function getTargetDirs(targetName, isProject) {
 }
 
 function getTargetDirsForTarget(targetName, isProject) {
-  const resolved = getTargetDirs(targetName, isProject);
+  let resolved;
+  if (parsed.path) {
+    resolved = {
+      skills: path.join(parsed.path, 'skills'),
+      agents: path.join(parsed.path, 'agents'),
+      commands: path.join(parsed.path, 'commands')
+    };
+  } else {
+    resolved = getTargetDirs(targetName, isProject);
+  }
   return {
     skills: process.env.OPEN_AGENT_SKILLS_DIR || resolved.skills,
     agents: process.env.OPEN_AGENT_AGENTS_DIR || resolved.agents,
@@ -298,15 +319,18 @@ function listComponents() {
 
 function statusComponents() {
   const components = scanComponents();
-  const activeTargets = parsed.target === 'all' 
-    ? Object.keys(targets) 
-    : [parsed.target];
+  const activeTargets = parsed.path 
+    ? ['custom'] 
+    : (parsed.target === 'all' ? Object.keys(targets) : [parsed.target]);
 
   console.log(format('bold', `=== ${format('cyan', 'open-agent-hub')} 本地环境激活状态 ===\n`));
 
   for (const targetName of activeTargets) {
     const tDirs = getTargetDirsForTarget(targetName, parsed.project);
-    console.log(format('bold', `--- 目标环境: ${targetName.toUpperCase()} (${parsed.project ? '项目级' : '全局'}) ---`));
+    const targetLabel = targetName === 'custom' 
+      ? `自定义路径 (${parsed.path})` 
+      : `${targetName.toUpperCase()} (${parsed.project ? '项目级' : '全局'})`;
+    console.log(format('bold', `--- 目标环境: ${targetLabel} ---`));
     
     let totalCount = 0;
     let activeCount = 0;
@@ -341,7 +365,7 @@ function statusComponents() {
           statusStr = format('dim', '⚪ 未激活');
         }
 
-        if (parsed.target !== 'all' || linkStatus.status === 'linked' || linkStatus.status === 'physical' || linkStatus.status === 'broken') {
+        if (parsed.path || parsed.target !== 'all' || linkStatus.status === 'linked' || linkStatus.status === 'physical' || linkStatus.status === 'broken') {
           console.log(`    - ${item.id.padEnd(35)} [${statusStr}]`);
         }
       }
@@ -362,9 +386,11 @@ function enableComponent(name) {
   const isAgents = name === '--agents';
   const isCommands = name === '--commands';
 
-  const activeTargets = parsed.target === 'all' 
-    ? Object.keys(targets) 
-    : [parsed.target];
+  const activeTargets = parsed.path 
+    ? ['custom'] 
+    : (parsed.target === 'all' ? Object.keys(targets) : [parsed.target]);
+
+  const targetsLabel = parsed.path ? `自定义路径: ${parsed.path}` : `目标环境 [${activeTargets.join(', ')}]`;
 
   if (isAll || isSkills || isAgents || isCommands) {
     const components = scanComponents();
@@ -374,14 +400,17 @@ function enableComponent(name) {
     if (isAll || isCommands) typesToProcess.push('commands');
 
     const counts = typesToProcess.map(t => `${components[t].length} 个 ${t.toUpperCase()}`).join(', ');
-    console.log(format('bold', `正在激活指定类型的全部组件 (${counts}) 至目标环境 [${activeTargets.join(', ')}]...`));
+    console.log(format('bold', `正在激活指定类型的全部组件 (${counts}) 至 ${targetsLabel}...`));
     
     let totalSuccess = 0;
     let totalError = 0;
 
     for (const targetName of activeTargets) {
       const tDirs = getTargetDirsForTarget(targetName, parsed.project);
-      console.log(`\n--- 激活至 ${targetName.toUpperCase()} (${parsed.project ? '项目级' : '全局'}) ---`);
+      const targetLabel = targetName === 'custom' 
+        ? `自定义路径 (${parsed.path})` 
+        : `${targetName.toUpperCase()} (${parsed.project ? '项目级' : '全局'})`;
+      console.log(`\n--- 激活至 ${targetLabel} ---`);
 
       for (const type of typesToProcess) {
         const items = components[type];
@@ -414,10 +443,13 @@ function enableComponent(name) {
     process.exit(1);
   }
 
-  console.log(format('bold', `正在激活组件 "${name}" 至目标环境 [${activeTargets.join(', ')}]...`));
+  console.log(format('bold', `正在激活组件 "${name}" 至 ${targetsLabel}...`));
   for (const targetName of activeTargets) {
     const tDirs = getTargetDirsForTarget(targetName, parsed.project);
-    console.log(`\n--- 激活至 ${targetName.toUpperCase()} (${parsed.project ? '项目级' : '全局'}) ---`);
+    const targetLabel = targetName === 'custom' 
+      ? `自定义路径 (${parsed.path})` 
+      : `${targetName.toUpperCase()} (${parsed.project ? '项目级' : '全局'})`;
+    console.log(`\n--- 激活至 ${targetLabel} ---`);
     for (const comp of found) {
       const filename = comp.filename || comp.id;
       const destPath = path.join(tDirs[comp.type], filename);
@@ -439,9 +471,11 @@ function disableComponent(name) {
   const isAgents = name === '--agents';
   const isCommands = name === '--commands';
 
-  const activeTargets = parsed.target === 'all' 
-    ? Object.keys(targets) 
-    : [parsed.target];
+  const activeTargets = parsed.path 
+    ? ['custom'] 
+    : (parsed.target === 'all' ? Object.keys(targets) : [parsed.target]);
+
+  const targetsLabel = parsed.path ? `自定义路径: ${parsed.path}` : `目标环境 [${activeTargets.join(', ')}]`;
 
   if (isAll || isSkills || isAgents || isCommands) {
     const components = scanComponents();
@@ -451,14 +485,17 @@ function disableComponent(name) {
     if (isAll || isCommands) typesToProcess.push('commands');
 
     const counts = typesToProcess.map(t => `${components[t].length} 个 ${t.toUpperCase()}`).join(', ');
-    console.log(format('bold', `正在禁用指定类型的全部组件 (${counts}) 从目标环境 [${activeTargets.join(', ')}]...`));
+    console.log(format('bold', `正在禁用指定类型的全部组件 (${counts}) 从 ${targetsLabel}...`));
     
     let totalSuccess = 0;
     let totalError = 0;
 
     for (const targetName of activeTargets) {
       const tDirs = getTargetDirsForTarget(targetName, parsed.project);
-      console.log(`\n--- 从 ${targetName.toUpperCase()} 清理 (${parsed.project ? '项目级' : '全局'}) ---`);
+      const targetLabel = targetName === 'custom' 
+        ? `自定义路径 (${parsed.path})` 
+        : `${targetName.toUpperCase()} (${parsed.project ? '项目级' : '全局'})`;
+      console.log(`\n--- 从 ${targetLabel} 清理 ---`);
 
       for (const type of typesToProcess) {
         const items = components[type];
@@ -490,13 +527,16 @@ function disableComponent(name) {
     let cleaned = false;
     for (const targetName of activeTargets) {
       const tDirs = getTargetDirsForTarget(targetName, parsed.project);
+      const targetLabel = targetName === 'custom' 
+        ? `自定义路径 (${parsed.path})` 
+        : `${targetName.toUpperCase()} (${parsed.project ? '项目级' : '全局'})`;
       for (const type of ['skills', 'agents', 'commands']) {
         const guessedFilename = type === 'skills' ? name : (type === 'agents' ? `${name}.md` : name);
         const destPath = path.join(tDirs[type], guessedFilename);
         const lstat = getLstatSafe(destPath);
         if (lstat && lstat.isSymbolicLink()) {
           fs.unlinkSync(destPath);
-          console.log(`  - ${format('green', '✓')} [${targetName.toUpperCase()}][${type.toUpperCase()}] ${guessedFilename} -> 已成功清理残留软链接`);
+          console.log(`  - ${format('green', '✓')} [${targetLabel}][${type.toUpperCase()}] ${guessedFilename} -> 已成功清理残留软链接`);
           cleaned = true;
         }
       }
@@ -507,10 +547,13 @@ function disableComponent(name) {
     return;
   }
 
-  console.log(format('bold', `正在禁用组件 "${name}" 从目标环境 [${activeTargets.join(', ')}]...`));
+  console.log(format('bold', `正在禁用组件 "${name}" 从 ${targetsLabel}...`));
   for (const targetName of activeTargets) {
     const tDirs = getTargetDirsForTarget(targetName, parsed.project);
-    console.log(`\n--- 从 ${targetName.toUpperCase()} 清理 (${parsed.project ? '项目级' : '全局'}) ---`);
+    const targetLabel = targetName === 'custom' 
+      ? `自定义路径 (${parsed.path})` 
+      : `${targetName.toUpperCase()} (${parsed.project ? '项目级' : '全局'})`;
+    console.log(`\n--- 从 ${targetLabel} 清理 ---`);
     for (const comp of found) {
       const filename = comp.filename || comp.id;
       const destPath = path.join(tDirs[comp.type], filename);
@@ -581,6 +624,7 @@ ${format('bold', '通用参数选项 (Options):')}
   -p, --project                  项目工作区级别激活 (软链接至当前项目目录下，默认行为)
   -g, --global                   系统全局级别激活 (软链接至家目录系统目录下)
   -t, --target <name>            指定目标环境 (可选值: claude, antigravity, gemini, codex, cursor, trae, opencode, all。默认: claude) (别名: --assistant, --host, --tool)
+  --path <dir_path>              指定自定义目标基准目录 (激活时会在该目录下创建 skills/、agents/、commands/)
 
 ${format('bold', '环境变量配置 (可选/优先级最高):')}
   ${format('yellow', 'OPEN_AGENT_SKILLS_DIR')}   自定义 Skills 软链接目标目录 (默认: ~/.claude/skills)

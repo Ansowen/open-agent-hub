@@ -108,6 +108,9 @@ oah enable --global --target=all
 # 激活所有组件到全局系统目录下 (系统级激活)
 oah enable --global
 
+# 一键激活所有组件到自定义目标基准目录下 (会自动在该目录下分子目录链接)
+oah enable --path=/path/to/my_agent_dir
+
 # 一键禁用并安全清理当前项目工作区的全部软链接
 oah disable
 ```
@@ -123,6 +126,7 @@ oah disable
     *   `-p, --project`：项目工作区级别激活（默认行为，软链接至当前命令行所在项目目录下的配置目录中，如 `.claude/` 等）。
     *   `-g, --global`：系统全局级别激活（软链接至用户家目录系统路径下，如 `~/.claude/` 等）。
     *   `-t, --target <name>`：指定目标环境（支持：`claude`, `antigravity`, `gemini`, `codex`, `cursor`, `trae`, `opencode` 以及 `all`，默认值：`claude`）。
+    *   `--path <dir_path>`：指定自定义目标基准目录（激活/禁用时会自动在该路径下处理 `skills/`、`agents/` 和 `commands/`）。
 
 
 
